@@ -1,0 +1,90 @@
+*{
+    box-sizing: border-box;
+    margin: 0px;
+    padding: 0px;
+}
+
+
+#container{
+    background-color: black;
+    margin: 0px auto;
+
+}
+
+.brick{
+    background-color:blue;
+    height: 20px;
+    width: 20px;
+    display:inline-block;
+}
+.coin{
+    background-image: url('pacmandot.png');
+    background-position: center;
+    background-size: contain;
+    background-repeat:no-repeat;
+    width: 20px;
+    height: 20px;
+    display:inline-block;
+    
+    
+
+}
+.row{
+    padding: 0px;
+    height:20px;
+    border:0px;
+}
+.empty{
+    width: 20px;
+    height: 20px;
+    display:inline-block;
+}
+
+#pacman{
+    background-image: url('pacman.gif');
+    background-size: contain;
+    background-position: center;
+    width: 20px;
+    height: 20px;
+    display:inline-block;
+    position: absolute;
+}
+#score{
+    outline:1px solid white;
+    text-align: center;
+    width: 40px;
+    height: 40px;
+    color: white;
+    padding: 5px;
+    margin: 20px;
+
+}
+
+.ghost{
+    height: 20px;
+    width: 20px;
+    background-size: contain;
+    position: absolute;
+}
+
+#pinky{
+    background-image:url("pinky.gif");   
+}
+#inky{
+    background-image:url("inky.gif");   
+}
+
+#blinky{
+    background-image:url("blinky.gif");   
+}
+#clyde{
+    background-image:url("clyde.gif");   
+}
+#cherry{
+    background-image: url('cherry.png');
+    height: 20px;
+    width: 20px;
+    background-size: contain;
+    background-position: center;
+    display:inline-block;
+}

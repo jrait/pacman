@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pacman Demo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id=container>
+        <div id = "world"></div>
+        <div id = "pacman"></div>
+        <div id = "blinky" class = "ghost"></div>
+        <div id = "pinky" class = "ghost"> </div>
+        <div id = "inky" class = "ghost"></div>
+        <div id = "clyde" class = "ghost"></div>
+        <div id = "score">0</div>
+    </div>
+</body>
+<script>
+    var world = [
+        [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
+        [2,1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,2],
+        [2,1,2,2,2,2,2,1,2,1,2,2,2,2,2,2,2,2,2,1,2,1,2,2,2,2,2,1,2],
+        [2,1,1,1,1,1,2,1,2,1,1,1,1,1,2,1,1,1,1,1,2,1,2,1,1,1,1,1,2],
+        [2,2,1,2,2,1,2,1,1,1,1,1,2,1,2,1,2,1,1,1,1,1,2,1,2,2,1,2,2],
+        [2,1,1,1,1,1,1,1,1,2,1,2,2,1,2,1,2,2,1,2,1,1,1,1,1,1,1,1,2],
+        [2,1,2,2,2,1,2,2,2,2,1,1,1,1,1,1,1,1,1,2,2,2,2,1,2,2,2,1,2],
+        [2,1,1,1,2,1,2,1,1,1,1,1,0,0,0,0,0,1,1,1,1,1,2,1,2,1,1,1,2],
+        [2,1,2,1,1,1,1,1,1,1,1,1,0,0,0,0,0,1,1,1,1,1,1,1,1,1,2,1,2],
+        [2,1,2,2,1,2,2,2,2,1,1,2,2,2,2,2,2,2,1,1,2,2,2,2,1,2,2,1,2],
+        [2,1,2,1,1,2,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,2,1,1,2,1,2],
+        [2,1,2,1,2,2,1,2,1,2,2,2,2,2,1,2,2,2,2,2,1,2,1,2,2,1,2,1,2],
+        [2,1,1,1,1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,2,1,1,1,1,1,1,2],
+        [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
+        
+    ];
+    var pacman = {
+        x: 14,
+        y: 10,
+        facing: 'rotate(180deg)'
+    }
+    var inky = {
+        x:12,
+        y:8
+    }
+    var blinky = {
+        x:13,
+        y:7
+    }
+    var pinky = {
+        x:14,
+        y:8
+    }
+    var clyde = {
+        x:15,
+        y:7
+    }
+
+
+    var score = 0
+
+    function displayWorld(){
+        var output = '';
+        for(var i =0; i<world.length; i++){
+            output += "<div class = 'row'>";
+            for(var j=0; j<world[i].length; j++){
+                if(world[i][j]==2){
+                    output += '<div class ="brick"></div>'
+                }
+                else if(world[i][j]==1){
+                    output += '<div class ="coin"></div>'
+                }
+                else if(world[i][j]==0){
+                    output += '<div class ="empty"></div>'
+                }
+                else if(world[i][j]==3){
+                    output += '<div id ="cherry"></div>'
+                }
+            }
+            output += '</div>'
+        }
+        //console.log(output)
+        document.getElementById('world').innerHTML = output;
+    }
+
+    function displayPacman(){
+        document.getElementById('pacman').style.left = pacman.x*20+"px";
+        document.getElementById('pacman').style.top = pacman.y*20+"px";
+        document.getElementById('pacman').style.transform = pacman.facing;
+    }
+    function displayGhosts(){
+        document.getElementById('inky').style.left = inky.x*20+"px";
+        document.getElementById('inky').style.top = inky.y*20+"px";
+        document.getElementById('blinky').style.left = blinky.x*20+"px";
+        document.getElementById('blinky').style.top = blinky.y*20+"px";
+        document.getElementById('pinky').style.left = pinky.x*20+"px";
+        document.getElementById('pinky').style.top = pinky.y*20+"px";
+        document.getElementById('clyde').style.left = clyde.x*20+"px";
+        document.getElementById('clyde').style.top = clyde.y*20+"px";
+    };
+    function displayCherry(){
+        world[10][14] = 3;
+    }
+    
+
+    function displayScore(){
+        document.getElementById('score').innerHTML = score;
+    }
+
+    function moveGhosts(ghostname){
+        r = Math.random();
+        if(r>0.5){ 
+            ydelta = Math.ceil(Math.random()*3-2)
+            if(world[ghostname.y+ydelta][ghostname.x]!=2){
+                ghostname.y+= ydelta;
+            }
+        
+        }
+        else if (r<=0.5){
+            xdelta = Math.ceil(Math.random()*3-2)
+            if(world[ghostname.y][ghostname.x+xdelta]!=2){
+                ghostname.x +=xdelta;
+            }
+        }
+        
+    }
+
+    displayWorld();
+    displayPacman();
+    displayGhosts();
+
+    var turn_count = 0
+    document.onkeydown = function(e){
+        turn_count++;
+        moveGhosts(blinky);
+        moveGhosts(inky);
+        moveGhosts(pinky);
+        moveGhosts(clyde);
+        if(e.keyCode ==40){
+            pacman.y ++;
+            
+            pacman.facing = 'rotate(270deg)'
+            if(world[pacman.y][pacman.x]==2){
+                pacman.y --;
+            }
+        }
+        else if (e.keyCode == 38){
+            pacman.y --;
+            pacman.facing = 'rotate(90deg)'
+            if(world[pacman.y][pacman.x]==2){
+                pacman.y ++;
+            }
+        }
+        else if (e.keyCode == 39){
+            pacman.x ++;
+            pacman.facing = 'rotate(180deg)'
+            if(world[pacman.y][pacman.x]==2){
+                pacman.x --;
+            }
+        }
+        else if (e.keyCode == 37){
+            pacman.x --;
+            pacman.facing = 'rotate(0deg)'
+            if(world[pacman.y][pacman.x]==2){
+                pacman.x ++;
+            }
+        }
+        
+        if(world[pacman.y][pacman.x]==1){
+        world[pacman.y][pacman.x]=0;
+        score += 10;
+        displayWorld();
+        displayScore();
+        }
+        else if(world[pacman.y][pacman.x]==3){
+        world[pacman.y][pacman.x]=0;
+        score += 50;
+        displayWorld();
+        displayScore();
+        turn_count = 0
+        }
+
+        if(pacman.y==inky.y&& pacman.x==inky.x){
+            pacman.y = 10
+            pacman.x = 14
+            displayPacman()
+            score -=100
+            displayScore()
+        }
+        if(pacman.y==pinky.y&& pacman.x==pinky.x){
+            pacman.y = 10
+            pacman.x = 14
+            displayPacman()
+            score -=100
+            displayScore()
+        }
+        if(pacman.y==blinky.y&& pacman.x==blinky.x){
+            pacman.y = 10
+            pacman.x = 14
+            displayPacman()
+            score -=100
+            displayScore()
+        }
+        if(pacman.y==clyde.y&& pacman.x==clyde.x){
+            pacman.y = 10
+            pacman.x = 14
+            displayPacman()
+            score -=100
+            displayScore()
+        }
+
+        if(turn_count>60){
+            displayCherry();
+            displayWorld();  
+        }
+        displayGhosts();
+        displayPacman();
+        
+        
+    }
+
+</script>
+
+</html>
